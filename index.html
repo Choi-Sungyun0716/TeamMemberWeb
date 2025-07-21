@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팀원 소개</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 50px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3열로 변경 */
+            grid-template-rows: repeat(2, 1fr); /* 2행 유지 */
+            gap: 15px;
+            max-width: 960px; /* 필요 시 조정 가능 */
+            margin: 0 auto;
+        }
+
+        /* 1, 2, 3은 첫 번째 행, 4, 5는 두 번째 행 */
+        .member-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .member-card:nth-child(2) { grid-column: 2; grid-row: 1; }
+        .member-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+        .member-card:nth-child(4) { grid-column: 1; grid-row: 2; }
+        .member-card:nth-child(5) { grid-column: 2; grid-row: 2; }
+        .member-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 380px; /* 고정 높이 설정 */
+            width: 340px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        /* 각 조원별 포인트 컬러 */
+        .member-card:nth-child(1) { --accent-color: #3B82F6; }
+        .member-card:nth-child(2) { --accent-color: #10B981; }
+        .member-card:nth-child(3) { --accent-color: #F59E0B; }
+        .member-card:nth-child(4) { --accent-color: #EF4444; }
+        .member-card:nth-child(5) { --accent-color: #8B5CF6; }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .member-avatar::after {
+            content: '👤';
+            font-size: 24px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .member-avatar.has-image::after {
+            display: none;
+        }
+
+        .member-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .member-quote {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-style: italic;
+            color: #555;
+            position: relative;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .member-details {
+            margin: 15px 0;
+            flex-grow: 1;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .detail-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .skill-tag {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 1024px) {
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .member-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+            .member-card:nth-child(2) { grid-column: 2; grid-row: 1; }
+            .member-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+            .member-card:nth-child(4) { grid-column: 1; grid-row: 2; }
+            .member-card:nth-child(5) { grid-column: 2; grid-row: 2; }
+        }
+
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(5, 1fr);
+                gap: 20px;
+            }
+
+            .member-card:nth-child(1),
+            .member-card:nth-child(2),
+            .member-card:nth-child(3),
+            .member-card:nth-child(4),
+            .member-card:nth-child(5) {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .title {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">우리 팀을 소개합니다</h1>
+        
+        <div class="team-grid">
+            <!-- 조원 1 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar" id="avatar1">
+                        <img src="/placeholder.svg" alt="김철수 프로필" style="display: none;" onerror="this.style.display='none'; this.parentElement.classList.remove('has-image');" onload="this.style.display='block'; this.parentElement.classList.add('has-image');">
+                    </div>
+                    <div class="member-info">
+                        <h3>김철수</h3>
+                        <div class="member-role">팀장 / 프론트엔드 개발자</div>
+                    </div>
+                </div>
+                
+                <div class="member-quote">
+                    사용자 경험을 최우선으로 생각합니다
+                </div>
+                
+                <div class="member-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">❤️</span>
+                        <span>깔끔한 UI/UX 디자인</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">💻</span>
+                        <span>웹 개발 및 최적화</span>
+                    </div>
+                </div>
+                
+                <div class="skills">
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">CSS</span>
+                </div>
+            </div>
+
+            <!-- 조원 2 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar" id="avatar2">
+                        <img src="/placeholder.svg" alt="이영희 프로필" style="display: none;" onerror="this.style.display='none'; this.parentElement.classList.remove('has-image');" onload="this.style.display='block'; this.parentElement.classList.add('has-image');">
+                    </div>
+                    <div class="member-info">
+                        <h3>이영희</h3>
+                        <div class="member-role">백엔드 개발자</div>
+                    </div>
+                </div>
+                
+                <div class="member-quote">
+                    안정적인 서버 구축이 목표입니다
+                </div>
+                
+                <div class="member-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">❤️</span>
+                        <span>서버 아키텍처 설계</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🔧</span>
+                        <span>데이터베이스 최적화</span>
+                    </div>
+                </div>
+                
+                <div class="skills">
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">MongoDB</span>
+                    <span class="skill-tag">Express</span>
+                </div>
+            </div>
+
+            <!-- 조원 3 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar" id="avatar3">
+                        <img src="/placeholder.svg" alt="박민수 프로필" style="display: none;" onerror="this.style.display='none'; this.parentElement.classList.remove('has-image');" onload="this.style.display='block'; this.parentElement.classList.add('has-image');">
+                    </div>
+                    <div class="member-info">
+                        <h3>박민수</h3>
+                        <div class="member-role">풀스택 개발자</div>
+                    </div>
+                </div>
+                
+                <div class="member-quote">
+                    프론트와 백엔드를 연결하는 다리 역할
+                </div>
+                
+                <div class="member-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">❤️</span>
+                        <span>전체적인 시스템 통합</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">⚡</span>
+                        <span>성능 최적화</span>
+                    </div>
+                </div>
+                
+                <div class="skills">
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Django</span>
+                </div>
+            </div>
+
+            <!-- 조원 4 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar" id="avatar4">
+                        <img src="/placeholder.svg" alt="정수진 프로필" style="display: none;" onerror="this.style.display='none'; this.parentElement.classList.remove('has-image');" onload="this.style.display='block'; this.parentElement.classList.add('has-image');">
+                    </div>
+                    <div class="member-info">
+                        <h3>정수진</h3>
+                        <div class="member-role">UI/UX 디자이너</div>
+                    </div>
+                </div>
+                
+                <div class="member-quote">
+                    사용자의 마음을 읽는 디자인을 추구합니다
+                </div>
+                
+                <div class="member-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">❤️</span>
+                        <span>사용자 중심 디자인</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🎨</span>
+                        <span>브랜딩 및 아이덴티티</span>
+                    </div>
+                </div>
+                
+                <div class="skills">
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Photoshop</span>
+                    <span class="skill-tag">Illustrator</span>
+                </div>
+            </div>
+
+            <!-- 조원 5 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar" id="avatar5">
+                        <img src="/placeholder.svg" alt="최동현 프로필" style="display: none;" onerror="this.style.display='none'; this.parentElement.classList.remove('has-image');" onload="this.style.display='block'; this.parentElement.classList.add('has-image');">
+                    </div>
+                    <div class="member-info">
+                        <h3>최동현</h3>
+                        <div class="member-role">데이터 분석가</div>
+                    </div>
+                </div>
+                
+                <div class="member-quote">
+                    데이터로 말하는 인사이트를 제공합니다
+                </div>
+                
+                <div class="member-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">❤️</span>
+                        <span>데이터 시각화</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">📊</span>
+                        <span>통계 분석 및 예측</span>
+                    </div>
+                </div>
+                
+                <div class="skills">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">R</span>
+                    <span class="skill-tag">Tableau</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+// 사진 업로드 기능
+function changeProfileImage(memberId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.querySelector(`#avatar${memberId} img`);
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+// 각 아바타에 클릭 이벤트 추가
+document.addEventListener('DOMContentLoaded', function() {
+    for (let i = 1; i <= 5; i++) {
+        const avatar = document.getElementById(`avatar${i}`);
+        avatar.style.cursor = 'pointer';
+        avatar.title = '클릭해서 사진 업로드';
+        avatar.addEventListener('click', () => changeProfileImage(i));
+    }
+});
+</script>
+</body>
+</html>
