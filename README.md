@@ -2,4 +2,4 @@
 ```
  <div class="member-avatar" id="avatar">
 ```
-html파일에서 위 코드 검색해 각자 순서에 맞는 avartar검색해서 이미지 주소 붙여넣으시면 됩니다.
+html파일에서 위 코드 검색해 각자 순서에 맞는 avatar검색해서 이미지 주소 붙여넣으시면 됩니다.
